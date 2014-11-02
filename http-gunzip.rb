@@ -32,6 +32,7 @@ while i = dat.index(%r(^HTTP/1\.[01] \d+ [a-zA-Z ]+\r?$), i0)
     print profit
     i0 = j + content_length
   else # Assume chunked encoding
+    z = ''
     loop do
       m = dat.match(/^([0123456789abcdef]+)?\r?$/, j)
       l = m[1].to_i(16)
@@ -41,13 +42,12 @@ while i = dat.index(%r(^HTTP/1\.[01] \d+ [a-zA-Z ]+\r?$), i0)
         break
       end
 
-      z = dat[m.offset(0)[1] + 1, l]
-
-      profit = Zlib::GzipReader.new(StringIO.new(z)).read
-      print profit
-
+      z += dat[m.offset(0)[1] + 1, l]
       j = m.offset(0)[1] + l + 2
     end
+
+    profit = Zlib::GzipReader.new(StringIO.new(z)).read rescue nil
+    print profit
   end
 
   puts
