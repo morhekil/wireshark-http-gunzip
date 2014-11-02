@@ -1,3 +1,6 @@
+based on [kizzx2 version](https://github.com/kizzx2/wireshark-http-gunzip),
+but modified to combine chunks of http body first, and only then unzip them
+
 # wireshark-http-gunzip
 
 See gzip'ed HTTP response body in "Follow TCP Stream" window.
